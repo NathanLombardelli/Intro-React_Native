@@ -1,4 +1,5 @@
-import { View, Image } from 'react-native';
+import { View, Image,PanResponder,Platform } from 'react-native';
+import Draggable from 'react-native-draggable';
 
 import { PanGestureHandler,TapGestureHandler } from 'react-native-gesture-handler';
 import Animated, {
@@ -59,18 +60,34 @@ export default function EmojiSticker({ imageSize, stickerSource }) {
         };
     });
 
+        if(Platform.OS !== "web") {
+            return (
+            <PanGestureHandler onGestureEvent={onDrag}>
+                <AnimatedView style={[containerStyle, {top: -350}]}>
+                    <TapGestureHandler onGestureEvent={onDoubleTap} numberOfTaps={2}>
+                        <AnimatedImage
+                            source={stickerSource}
+                            resizeMode="contain"
+                            style={[imageStyle, {width: imageSize, height: imageSize}]}
+                        />
+                    </TapGestureHandler>
+                </AnimatedView>
+            </PanGestureHandler>
+            );
+        }else{
 
-    return (
-        <PanGestureHandler onGestureEvent={onDrag}>
-            <AnimatedView style={[containerStyle, { top: -350 }]}>
-                <TapGestureHandler onGestureEvent={onDoubleTap} numberOfTaps={2}>
-                    <AnimatedImage
-                        source={stickerSource}
-                        resizeMode="contain"
-                        style={[imageStyle, { width: imageSize, height: imageSize }]}
-                    />
-                </TapGestureHandler>
-            </AnimatedView>
-        </PanGestureHandler>
-    );
+
+            return (
+                    <Draggable x={50} y={50}>
+                        <TapGestureHandler onGestureEvent={onDoubleTap} numberOfTaps={2}>
+                            <AnimatedImage
+                                source={stickerSource}
+                                resizeMode="contain"
+                                style={[imageStyle, {width: imageSize, height: imageSize}]}
+                            />
+                        </TapGestureHandler>
+                    </Draggable>
+            );
+        }
+
 }
