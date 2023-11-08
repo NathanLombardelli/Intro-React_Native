@@ -1,4 +1,4 @@
-import { View, Image,PanResponder,Platform } from 'react-native';
+import { View, Image,Platform } from 'react-native';
 import Draggable from 'react-native-draggable';
 
 import { PanGestureHandler,TapGestureHandler } from 'react-native-gesture-handler';
